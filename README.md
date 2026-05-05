@@ -8,7 +8,7 @@ No crypto knowledge needed. Members use M-Pesa and phone numbers.
 
 Kenya has over 2 million community organisations making collective decisions every day with zero transparent infrastructure. Money disappears. Leaders claim mandates they never had. Votes are disputed. Records are altered.
 
-Umoja fixes this by putting community governance on the blockchain — permanent, transparent, and tamper-proof.
+Umoja fixes this by putting community governance on the blockchain  permanent, transparent, and tamper-proof.
 
 ## Features
 
