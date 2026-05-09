@@ -5,6 +5,8 @@ const morgan = require('morgan');
 require('dotenv').config();
 const { createTables } = require('./db/migrate');
 
+const authRoutes = require('./routes/auth');
+
 const app = express();
 const PORT = process.env.PORT || 5001;
 
@@ -21,6 +23,8 @@ app.get('/api/health', (req, res) => {
     version: '1.0.0'
   });
 });
+
+app.use('/api/auth', authRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
