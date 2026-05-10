@@ -6,6 +6,7 @@ require('dotenv').config();
 const { createTables } = require('./db/migrate');
 
 const authRoutes = require('./routes/auth');
+const communityRoutes = require('./routes/communities');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -25,6 +26,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/communities', communityRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
