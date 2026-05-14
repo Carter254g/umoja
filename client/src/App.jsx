@@ -4,6 +4,7 @@ import { Layout } from './components/layout';
 import { Card, CardHeader, CardTitle, Badge, Button } from './components/ui';
 import { PageLoader } from './components/ui/Spinner';
 import { Users, Vote, TrendingUp, Shield, Plus } from 'lucide-react';
+import Login from './pages/Login';
 
 const DashboardPreview = () => (
   <Layout>
@@ -75,14 +76,13 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/preview" element={<DashboardPreview />} />
-          <Route path="/login" element={<div className="min-h-screen bg-dark-950 flex items-center justify-center"><p className="text-white">Login coming in Push 18</p></div>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={
             <PrivateRoute>
               <DashboardPreview />
             </PrivateRoute>
           } />
-          <Route path="*" element={<Navigate to="/preview" />} />
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
