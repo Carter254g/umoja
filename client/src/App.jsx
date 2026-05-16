@@ -4,6 +4,8 @@ import { PageLoader } from './components/ui/Spinner';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Communities from './pages/Communities';
+import Proposals from './pages/Proposals';
+import NewProposal from './pages/NewProposal';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -19,6 +21,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/communities" element={<PrivateRoute><Communities /></PrivateRoute>} />
+          <Route path="/proposals/new" element={<PrivateRoute><NewProposal /></PrivateRoute>} />
+          <Route path="/proposals" element={<PrivateRoute><Proposals /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </BrowserRouter>

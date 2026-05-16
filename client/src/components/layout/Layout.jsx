@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { clsx } from 'clsx';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import BottomNav from './BottomNav';
@@ -8,34 +7,29 @@ const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-dark-950">
-      <div className="hidden lg:block">
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#020617' }}>
+
+      {/* Sidebar - desktop only */}
+      <div id="desktop-sidebar" style={{ width: '256px', flexShrink: 0, position: 'sticky', top: 0, height: '100vh' }}>
         <Sidebar />
       </div>
 
+      {/* Mobile sidebar overlay */}
       {sidebarOpen && (
-        <div className="lg:hidden">
-          <div
-            className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm z-20"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <div className="fixed left-0 top-0 h-full z-30">
+        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex' }}>
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)' }} onClick={() => setSidebarOpen(false)} />
+          <div style={{ position: 'relative', zIndex: 51, width: '256px' }}>
             <Sidebar />
           </div>
         </div>
       )}
 
-      <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-
-      <main className={clsx(
-        'pt-16 pb-20 lg:pb-0 lg:pl-64 min-h-screen'
-      )}>
-        <div className="p-6 max-w-7xl mx-auto animate-fade-in">
+      {/* Content area */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
+        <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+        <main style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
           {children}
-        </div>
-      </main>
-
-      <div className="lg:hidden">
+        </main>
         <BottomNav />
       </div>
     </div>
