@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './hooks/useAuth';
 import { PageLoader } from './components/ui/Spinner';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Communities from './pages/Communities';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -16,11 +17,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          } />
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/communities" element={<PrivateRoute><Communities /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </BrowserRouter>
