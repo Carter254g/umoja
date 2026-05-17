@@ -1,4 +1,4 @@
-import { Bell, Search, Menu } from 'lucide-react';
+import { Bell, Search } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import Avatar from '../ui/Avatar';
 
@@ -6,41 +6,56 @@ const Navbar = ({ onMenuClick }) => {
   const { user } = useAuth();
 
   return (
-    <header
-      className="fixed top-0 right-0 left-64 h-16 z-20 flex items-center justify-between px-6"
-      style={{
-        background: 'rgba(15, 23, 42, 0.90)',
-        backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(148, 163, 184, 0.08)'
-      }}
-    >
-      <div className="flex items-center gap-4 flex-1">
-        <button
-          onClick={onMenuClick}
-          className="lg:hidden p-2 rounded-lg text-dark-400 hover:text-white hover:bg-dark-800 transition-colors"
-        >
-          <Menu size={20} />
-        </button>
-        <div className="relative hidden md:block flex-1 max-w-md">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-400" />
-          <input
-            type="text"
-            placeholder="Search communities, proposals..."
-            className="input-dark pl-9 py-2 text-sm w-full"
-          />
+    <header style={{
+      height: '64px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0 28px',
+      background: '#0d1424',
+      borderBottom: '1px solid #1e2d45',
+      flexShrink: 0,
+      position: 'sticky',
+      top: 0,
+      zIndex: 10,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+        <div style={{ position: 'relative', flex: 1, maxWidth: '360px' }}>
+          <Search size={15} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#4a6fa5' }} />
+          <input type="text" placeholder="Search communities, proposals..." style={{
+            width: '100%', padding: '9px 12px 9px 36px',
+            background: '#111827', border: '1px solid #1e2d45',
+            borderRadius: '10px', color: '#cbd5e1', fontSize: '13px',
+            outline: 'none', boxSizing: 'border-box',
+          }} />
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <button className="relative p-2 rounded-xl text-dark-400 hover:text-white hover:bg-dark-800 transition-colors">
-          <Bell size={20} />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-gold-500 rounded-full"></span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <button style={{
+          position: 'relative', width: '38px', height: '38px',
+          background: '#111827', border: '1px solid #1e2d45',
+          borderRadius: '10px', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#94a3b8',
+        }}>
+          <Bell size={18} />
+          <span style={{
+            position: 'absolute', top: '8px', right: '8px',
+            width: '7px', height: '7px',
+            background: '#d97706', borderRadius: '50%',
+          }} />
         </button>
-        <div className="flex items-center gap-2 pl-3 border-l border-dark-700">
+
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '10px',
+          padding: '6px 12px', background: '#111827',
+          border: '1px solid #1e2d45', borderRadius: '10px',
+        }}>
           <Avatar name={user?.name} size="sm" />
-          <div className="hidden md:block">
-            <p className="text-sm font-medium text-white leading-none">{user?.name}</p>
-            <p className="text-xs text-dark-400 mt-0.5">Member</p>
+          <div>
+            <div style={{ color: 'white', fontSize: '13px', fontWeight: 600, lineHeight: 1.2 }}>{user?.name}</div>
+            <div style={{ color: '#4a6fa5', fontSize: '11px' }}>Member</div>
           </div>
         </div>
       </div>
