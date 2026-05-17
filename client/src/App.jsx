@@ -7,6 +7,7 @@ import Communities from './pages/Communities';
 import Proposals from './pages/Proposals';
 import NewProposal from './pages/NewProposal';
 import ProposalDetail from './pages/ProposalDetail';
+import Treasury from './pages/Treasury';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -25,6 +26,7 @@ function App() {
           <Route path="/proposals/new" element={<PrivateRoute><NewProposal /></PrivateRoute>} />
           <Route path="/proposals/:id" element={<PrivateRoute><ProposalDetail /></PrivateRoute>} />
           <Route path="/proposals" element={<PrivateRoute><Proposals /></PrivateRoute>} />
+          <Route path="/treasury" element={<PrivateRoute><Treasury /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </BrowserRouter>
