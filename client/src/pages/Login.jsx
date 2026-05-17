@@ -2,25 +2,15 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../utils/api';
-import { Shield, Phone, ArrowRight, Loader2, CheckCircle } from 'lucide-react';
-import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
-
-const steps = {
-  PHONE: 'phone',
-  OTP: 'otp',
-  PROFILE: 'profile',
-};
+import { Shield, Phone, ArrowRight, CheckCircle, Users, Vote, Wallet } from 'lucide-react';
 
 const Login = () => {
-  const [step, setStep] = useState(steps.PHONE);
+  const [step, setStep] = useState('phone');
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [name, setName] = useState('');
-  const [isNewUser, setIsNewUser] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -29,13 +19,8 @@ const Login = () => {
     setError('');
     setLoading(true);
     try {
-      const res = await api.post('/auth/request-otp', {
-        phone,
-        name: name || undefined,
-      });
-      setIsNewUser(res.data.isNewUser);
-      setOtpSent(true);
-      setStep(steps.OTP);
+      const res = await api.post('/auth/request-otp', { phone, name });
+      setStep('otp');
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to send OTP. Try again.');
     } finally {
@@ -58,178 +43,162 @@ const Login = () => {
     }
   };
 
-  const handleResendOTP = async () => {
-    setError('');
-    setLoading(true);
-    try {
-      await api.post('/auth/request-otp', { phone });
-      setError('');
-    } catch (err) {
-      setError('Failed to resend OTP.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const features = [
+    { icon: <Vote size={20} color="#4ade80" />, title: 'Transparent Voting', desc: 'Every vote recorded on blockchain' },
+    { icon: <Wallet size={20} color="#d97706" />, title: 'Secure Treasury', desc: 'Funds released only on passing votes' },
+    { icon: <Users size={20} color="#60a5fa" />, title: 'Community First', desc: 'Built for chamas, SACCOs & more' },
+  ];
 
   return (
-    <div className="min-h-screen bg-dark-950 flex">
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #052e16 0%, #0f172a 60%, #052e16 100%)' }}
-      >
-        <div className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 25% 25%, #16a34a 0%, transparent 50%), radial-gradient(circle at 75% 75%, #d97706 0%, transparent 50%)'
-          }}
-        />
-        <div className="relative z-10 flex flex-col justify-between p-12 w-full">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-glow-green">
-              <Shield size={20} className="text-white" />
-            </div>
-            <span className="text-white font-bold text-xl">Umoja</span>
-          </div>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#080f1a' }}>
 
+      {/* Left panel */}
+      <div style={{
+        flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        padding: '60px', background: 'linear-gradient(135deg, #0a1628 0%, #0d2010 100%)',
+        borderRight: '1px solid #1e2d45',
+      }}>
+        {/* Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '48px' }}>
+          <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'linear-gradient(135deg, #16a34a, #15803d)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(22,163,74,0.4)' }}>
+            <Shield size={22} color="white" />
+          </div>
           <div>
-            <h1 className="text-5xl font-bold text-white leading-tight mb-6">
-              Community<br />
-              governance<br />
-              <span className="text-primary-400">reimagined.</span>
-            </h1>
-            <p className="text-dark-300 text-lg leading-relaxed max-w-md">
-              Transparent voting, secure treasury management, and tamper-proof decisions for every community in Kenya.
-            </p>
+            <p style={{ color: 'white', fontWeight: 800, fontSize: '20px', margin: 0, letterSpacing: '0.02em' }}>Umoja</p>
+            <p style={{ color: '#4a6fa5', fontSize: '12px', margin: 0 }}>Governance Platform</p>
           </div>
+        </div>
 
-          <div className="grid grid-cols-3 gap-6">
-            {[
-              { value: '2M+', label: 'Community orgs in Kenya' },
-              { value: '100%', label: 'Tamper-proof records' },
-              { value: 'Free', label: 'Always free to use' },
-            ].map(({ value, label }) => (
-              <div key={label}>
-                <p className="text-3xl font-bold text-primary-400">{value}</p>
-                <p className="text-dark-400 text-sm mt-1">{label}</p>
+        {/* Headline */}
+        <h1 style={{ color: 'white', fontSize: '42px', fontWeight: 800, lineHeight: 1.15, margin: '0 0 20px', letterSpacing: '-0.02em' }}>
+          Community<br />governance<br /><span style={{ color: '#4ade80' }}>reimagined.</span>
+        </h1>
+        <p style={{ color: '#64748b', fontSize: '16px', lineHeight: 1.7, margin: '0 0 48px', maxWidth: '380px' }}>
+          Transparent voting, secure treasury management, and tamper-proof decisions for every community in Kenya.
+        </p>
+
+        {/* Features */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {features.map(({ icon, title, desc }) => (
+            <div key={title} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {icon}
               </div>
-            ))}
-          </div>
+              <div>
+                <p style={{ color: 'white', fontSize: '14px', fontWeight: 600, margin: 0 }}>{title}</p>
+                <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Stats */}
+        <div style={{ display: 'flex', gap: '32px', marginTop: '48px', paddingTop: '32px', borderTop: '1px solid #1e2d45' }}>
+          {[['2M+', 'Community orgs'], ['100%', 'Tamper-proof'], ['Free', 'Always']].map(([val, label]) => (
+            <div key={label}>
+              <p style={{ color: '#4ade80', fontSize: '20px', fontWeight: 700, margin: 0 }}>{val}</p>
+              <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>{label}</p>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md">
-          <div className="lg:hidden flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-              <Shield size={20} className="text-white" />
-            </div>
-            <span className="text-white font-bold text-xl">Umoja</span>
-          </div>
+      {/* Right panel - Form */}
+      <div style={{ width: '480px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 48px' }}>
+        <div style={{ width: '100%' }}>
 
-          {step === steps.PHONE && (
-            <div className="animate-fade-in">
-              <h2 className="text-3xl font-bold text-white mb-2">Welcome</h2>
-              <p className="text-dark-400 mb-8">Enter your phone number to get started.</p>
+          {step === 'phone' ? (
+            <>
+              <h2 style={{ color: 'white', fontSize: '26px', fontWeight: 700, margin: '0 0 8px' }}>Welcome back</h2>
+              <p style={{ color: '#64748b', fontSize: '14px', margin: '0 0 32px' }}>Enter your phone number to get started.</p>
 
-              {error && (
-                <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm">
-                  {error}
+              <form onSubmit={handleRequestOTP} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
+                  <label style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '6px', display: 'block' }}>Phone number</label>
+                  <div style={{ position: 'relative' }}>
+                    <Phone size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#4a6fa5' }} />
+                    <input
+                      type="tel"
+                      placeholder="0712 345 678"
+                      value={phone}
+                      onChange={e => setPhone(e.target.value)}
+                      required
+                      style={{ width: '100%', padding: '13px 14px 13px 42px', background: '#111827', border: '1px solid #1e2d45', borderRadius: '10px', color: 'white', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
                 </div>
-              )}
 
-              <form onSubmit={handleRequestOTP} className="space-y-5">
-                <Input
-                  label="Phone number"
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="0712 345 678"
-                  icon={Phone}
-                  required
-                />
-                <Input
-                  label="Your name (new users only)"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Carter Obara"
-                  hint="Leave blank if you already have an account"
-                />
-                <Button
-                  type="submit"
-                  variant="primary"
-                  fullWidth
-                  loading={loading}
-                  size="lg"
-                >
-                  Continue
-                  <ArrowRight size={16} />
-                </Button>
-              </form>
-
-              <p className="text-dark-500 text-xs text-center mt-8">
-                By continuing you agree to our terms of service. Your phone number is used for verification only.
-              </p>
-            </div>
-          )}
-
-          {step === steps.OTP && (
-            <div className="animate-fade-in">
-              <div className="w-14 h-14 rounded-2xl bg-primary-500/15 border border-primary-500/30 flex items-center justify-center mb-6">
-                <Phone size={24} className="text-primary-400" />
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-2">Verify your number</h2>
-              <p className="text-dark-400 mb-8">
-                We sent a 6-digit code to <span className="text-white font-medium">{phone}</span>
-              </p>
-
-              {error && (
-                <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm">
-                  {error}
+                <div>
+                  <label style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '6px', display: 'block' }}>Your name <span style={{ color: '#4a6fa5' }}>(new users only)</span></label>
+                  <input
+                    type="text"
+                    placeholder="Leave blank if you already have an account"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    style={{ width: '100%', padding: '13px 14px', background: '#111827', border: '1px solid #1e2d45', borderRadius: '10px', color: 'white', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                  />
                 </div>
-              )}
 
-              <form onSubmit={handleVerifyOTP} className="space-y-5">
-                <Input
-                  label="Verification code"
-                  type="text"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  placeholder="123456"
-                  maxLength={6}
-                  required
-                  className="text-2xl tracking-widest text-center font-mono"
-                />
-                <Button
-                  type="submit"
-                  variant="primary"
-                  fullWidth
-                  loading={loading}
-                  size="lg"
-                  disabled={otp.length !== 6}
-                >
-                  Verify and Continue
-                  <CheckCircle size={16} />
-                </Button>
-              </form>
+                {error && <p style={{ color: '#f87171', fontSize: '13px', margin: 0 }}>{error}</p>}
 
-              <div className="mt-6 text-center">
-                <p className="text-dark-400 text-sm">
-                  Did not receive the code?{' '}
-                  <button
-                    onClick={handleResendOTP}
-                    disabled={loading}
-                    className="text-primary-400 hover:text-primary-300 font-medium"
-                  >
-                    Resend
-                  </button>
-                </p>
-                <button
-                  onClick={() => setStep(steps.PHONE)}
-                  className="text-dark-500 hover:text-dark-300 text-sm mt-2"
-                >
-                  Change phone number
+                <button type="submit" disabled={loading} style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  padding: '14px', borderRadius: '10px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
+                  background: 'linear-gradient(135deg, #16a34a, #15803d)',
+                  color: 'white', fontSize: '15px', fontWeight: 600,
+                  boxShadow: '0 0 20px rgba(22,163,74,0.3)',
+                  opacity: loading ? 0.7 : 1, marginTop: '8px',
+                }}>
+                  {loading ? 'Sending OTP...' : <> Continue <ArrowRight size={16} /></>}
                 </button>
+              </form>
+
+              <p style={{ color: '#4a6fa5', fontSize: '12px', textAlign: 'center', marginTop: '24px', lineHeight: 1.6 }}>
+                By continuing you agree to our terms of service.<br />Your phone number is used for verification only.
+              </p>
+            </>
+          ) : (
+            <>
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(22,163,74,0.15)', border: '1px solid rgba(22,163,74,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
+                <CheckCircle size={24} color="#4ade80" />
               </div>
-            </div>
+              <h2 style={{ color: 'white', fontSize: '26px', fontWeight: 700, margin: '0 0 8px' }}>Check your phone</h2>
+              <p style={{ color: '#64748b', fontSize: '14px', margin: '0 0 32px' }}>
+                We sent a 6-digit code to <strong style={{ color: 'white' }}>{phone}</strong>
+              </p>
+
+              <form onSubmit={handleVerifyOTP} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
+                  <label style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '6px', display: 'block' }}>OTP Code</label>
+                  <input
+                    type="text"
+                    placeholder="Enter 6-digit code"
+                    value={otp}
+                    onChange={e => setOtp(e.target.value)}
+                    maxLength={6}
+                    required
+                    style={{ width: '100%', padding: '13px 14px', background: '#111827', border: '1px solid #1e2d45', borderRadius: '10px', color: 'white', fontSize: '20px', outline: 'none', boxSizing: 'border-box', letterSpacing: '0.3em', textAlign: 'center' }}
+                  />
+                </div>
+
+                {error && <p style={{ color: '#f87171', fontSize: '13px', margin: 0 }}>{error}</p>}
+
+                <button type="submit" disabled={loading} style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  padding: '14px', borderRadius: '10px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
+                  background: 'linear-gradient(135deg, #16a34a, #15803d)',
+                  color: 'white', fontSize: '15px', fontWeight: 600,
+                  boxShadow: '0 0 20px rgba(22,163,74,0.3)',
+                  opacity: loading ? 0.7 : 1,
+                }}>
+                  {loading ? 'Verifying...' : <> Verify & Sign In <ArrowRight size={16} /></>}
+                </button>
+
+                <button type="button" onClick={() => setStep('phone')} style={{ background: 'none', border: 'none', color: '#4a6fa5', fontSize: '13px', cursor: 'pointer', textAlign: 'center', padding: '8px' }}>
+                  ← Back to phone number
+                </button>
+              </form>
+            </>
           )}
         </div>
       </div>
