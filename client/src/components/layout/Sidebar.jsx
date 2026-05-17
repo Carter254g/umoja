@@ -8,6 +8,7 @@ const navItems = [
   { icon: Users, label: 'Communities', path: '/communities' },
   { icon: Vote, label: 'Proposals', path: '/proposals' },
   { icon: Wallet, label: 'Treasury', path: '/treasury' },
+  { icon: Users, label: 'Members', path: '/members' },
   { icon: Bell, label: 'Notifications', path: '/notifications', badge: 3 },
   { icon: Settings, label: 'Settings', path: '/settings' },
 ];

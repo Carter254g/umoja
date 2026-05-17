@@ -8,6 +8,7 @@ import Proposals from './pages/Proposals';
 import NewProposal from './pages/NewProposal';
 import ProposalDetail from './pages/ProposalDetail';
 import Treasury from './pages/Treasury';
+import Members from './pages/Members';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -27,6 +28,7 @@ function App() {
           <Route path="/proposals/:id" element={<PrivateRoute><ProposalDetail /></PrivateRoute>} />
           <Route path="/proposals" element={<PrivateRoute><Proposals /></PrivateRoute>} />
           <Route path="/treasury" element={<PrivateRoute><Treasury /></PrivateRoute>} />
+          <Route path="/members" element={<PrivateRoute><Members /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </BrowserRouter>
