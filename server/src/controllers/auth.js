@@ -30,6 +30,7 @@ const requestOTP = async (req, res) => {
 
   const formattedPhone = formatPhone(phone);
   const otp = generateOTP();
+  console.log(`OTP for ${phone}: ${otp}`);
   const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
   try {
