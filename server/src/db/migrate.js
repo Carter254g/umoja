@@ -15,6 +15,12 @@ const createTables = async () => {
       );
     `);
     console.log('users table created');
+    // Add missing columns if they don't exist
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(20)`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS otp VARCHAR(6)`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS otp_expires TIMESTAMP`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS wallet_address VARCHAR(42)`);
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS communities (
