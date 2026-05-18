@@ -21,6 +21,8 @@ const createTables = async () => {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS otp_expires TIMESTAMP`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT FALSE`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS wallet_address VARCHAR(42)`);
+    await pool.query(`ALTER TABLE users ALTER COLUMN email DROP NOT NULL`);
+    await pool.query(`ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL`);
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS communities (
