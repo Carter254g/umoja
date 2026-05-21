@@ -1,6 +1,6 @@
 # Umoja
 
-A decentralized community governance platform for Kenya. Chamas, churches, schools, tenant associations and any community group can create proposals, vote transparently, and manage funds — all on the blockchain.
+A decentralized community governance platform for Kenya. Chamas, churches, schools, tenant associations and any community group can create proposals, vote transparently, and manage funds  all on the blockchain.
 
 No crypto knowledge needed. Members use M-Pesa and phone numbers.
 
